@@ -5,8 +5,8 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
+        <p className='text-pink-700 font-bold text-lg brightness-150'>
+          Tailwindcss setup test, Get started by editing&nbsp;
           <code className={styles.code}>src/app/page.tsx</code>
         </p>
         <div>
