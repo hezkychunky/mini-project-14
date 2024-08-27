@@ -3,93 +3,37 @@ import styles from './page.module.css'
 
 export default function Home() {
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p className='text-pink-700 font-bold text-lg brightness-150'>
-          Tailwindcss setup test, Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="w-[1440px] h-[954px] relative bg-white">
+      <div className="w-[531px] left-[64px] top-[64px] absolute text-[#252525] text-[88px] font-extrabold font-['Avenir'] leading-[104px]">Projects and practice</div>
+      <div className="left-[64px] top-[341px] absolute justify-start items-start gap-14 inline-flex">
+        <div className="justify-start items-start gap-[70px] flex">
+          <div className="flex-col justify-center items-start gap-6 inline-flex">
+            <div className="h-[180px] flex-col justify-start items-start gap-1 flex">
+              <div className="text-[#252525]/60 text-[32px] font-extrabold font-Avenir">01</div>
+              <div className="w-[400px] text-[#252525]/80 text-2xl font-normal font-Avenir">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Faucibus in libero risus semper habitant arcu eget. Et integer facilisi eget.</div>
+            </div>
+            <img className="w-[400px] h-[345px] relative" src="https://via.placeholder.com/400x345" />
+          </div>
+        </div>
+        <div className="justify-start items-start gap-[70px] flex">
+          <div className="flex-col justify-center items-start gap-6 inline-flex">
+            <div className="h-[180px] pr-[37px] flex-col justify-start items-start gap-1 flex">
+              <div className="text-[#252525]/60 text-[32px] font-extrabold font-['Avenir']">02</div>
+              <div className="w-[400px] text-[#252525]/80 text-2xl font-normal font-['Avenir']">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Faucibus in libero risus semper habitant arcu eget. Et integer facilisi eget.</div>
+            </div>
+            <img className="w-[400px] h-[345px] relative" src="https://via.placeholder.com/400x345" />
+          </div>
+        </div>
+        <div className="justify-start items-start gap-[70px] flex">
+          <div className="flex-col justify-center items-start gap-6 inline-flex">
+            <div className="h-[180px] flex-col justify-start items-start gap-1 flex">
+              <div className="text-[#252525]/60 text-[32px] font-extrabold font-['Avenir']">03</div>
+              <div className="w-[400px] text-[#252525]/80 text-2xl font-normal font-['Avenir']">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Faucibus in libero risus semper habitant arcu eget. Et integer facilisi eget.</div>
+            </div>
+            <img className="w-[400px] h-[345px] relative" src="https://via.placeholder.com/400x345" />
+          </div>
         </div>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   )
 }
