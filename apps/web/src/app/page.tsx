@@ -5,27 +5,6 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <div className={styles.description}>
-        <p className='text-pink-700 font-bold text-lg brightness-150'>
-          Tailwindcss setup test, Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
       </div>
 
       <div className={styles.center}>
