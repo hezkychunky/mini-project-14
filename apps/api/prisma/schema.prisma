@@ -10,12 +10,30 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Sample {
-  id        Int      @id @default(autoincrement())
-  name      String
-  code      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum Role {
+  User
+  Admin
+}
 
-  @@map("samples") // if you want to use snake_case format
+model Bonus {
+  bonusId    Int      @id @default(autoincrement())
+  owner      User     @relation(fields: [ownerId], references: [id])
+  amount     Int      @default(10000)
+  ownerId    Int
+  validUntil DateTime 
+}
+
+model User {
+  id                 Int      @id @default(autoincrement())
+  username           String   @unique
+  password           String
+  ownedReferalNumber String?  @unique
+  referalNumber      String?
+  balance            Int      @default(0)
+  // point              Int       @default(0)
+  coupon             Boolean  @default(false)
+  couponValidUntil   DateTime?
+  role               Role     @default(User)
+  createdAt          DateTime @default(now())
+  bonus              Bonus[]
 }
