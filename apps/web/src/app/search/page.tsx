@@ -60,7 +60,7 @@ export default function Search() {
                         ))}
                     </div>
                 ) : (
-                    <div className="p-4 bg-gray-100 border border-gray-300 rounded-lg transform transition-transform duration-500 ease-in-out hover:scale-105 hover:shadow-lg animate-pulse text-center">
+                    <div className="p-4 bg-gray-100 border border-gray-300 rounded-lg transform transition-transform duration-500 ease-in-out hover:scale-105 hover:shadow-lg animate-pulse text-center pb-20">
                         <p className="text-gray-700 mb-2">No Concerts Found</p>
                         <p className="text-gray-600 mb-4">Maybe next Time</p>
                         <div className="flex justify-center">

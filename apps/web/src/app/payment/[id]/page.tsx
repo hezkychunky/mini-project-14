@@ -53,7 +53,7 @@ const PaymentChecks = () => {
     return (
         <Wrapper>
             <div className="p-6 bg-gray-100 rounded-lg shadow-md max-w-md mx-auto mt-10">
-                <h1 className="text-2xl font-bold text-gray-900 mb-4">Payment Details</h1>
+                <h1 className="text-2xl font-bold text-gray-900 mb-4">Checkout Details</h1>
                 {paymentDetails ? (
                     <div className="bg-white p-4 rounded-lg shadow-md">
                         <p className="text-lg font-semibold text-gray-800 mb-2">Amount: <span className="font-normal text-gray-600">{FormatCurrency(paymentDetails.amount)}</span></p>

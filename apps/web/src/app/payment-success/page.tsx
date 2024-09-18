@@ -1,4 +1,5 @@
 // src/app/payment-success/page.tsx
+import ReviewSystem from '@/components/rating';
 import Wrapper from '@/components/wrapper';
 import Link from 'next/link';
 
@@ -22,6 +23,8 @@ const PaymentSuccessPage = () => {
         <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-md text-center">
           <p className="text-md text-gray-800 mb-4">Your payment details have been sent to your email. If you need further assistance, please contact our support team.</p>
         </div>
+
+        <ReviewSystem />
 
         {/* Button */}
         <Link href={'/'} passHref>

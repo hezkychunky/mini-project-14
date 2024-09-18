@@ -27,10 +27,11 @@ model konser {
   gambarKonser    String?
   lokasi          String?
   namaKonser      String
-  tanggal         DateTime        @db.DateTime(0)
+  tanggal         DateTime?       @db.DateTime(0)
   waktu           String
   event_details   event_details[]
   Payment         Payment[]
+  review          Review[]
 }
 
 model User {
@@ -53,4 +54,15 @@ model Payment {
   // Relations
   konser konser @relation(fields: [IdKonser], references: [id])
   user   User   @relation(fields: [userId], references: [id])
+}
+
+model Review {
+  id          Int      @id @default(autoincrement())
+  rating      Int
+  experience  String
+  quality     String
+  suggestions String?
+  ConcertId   Int
+  konser      konser   @relation(fields: [ConcertId], references: [id])
+  createdAt   DateTime @default(now())
 }

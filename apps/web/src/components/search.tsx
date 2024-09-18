@@ -15,7 +15,7 @@ const SearchBar = () => {
     }
 
     return (
-        <div>
+        <div className="w-[10px]">
             <form onSubmit={handleSearch}>
                 <input
                     type="text"

@@ -19,3 +19,26 @@ export interface EventDetails {
   discount?: number,
   discountExpiry?: Date, // Match Prisma field name
 }
+
+export interface AddEventData {
+  namaKonser: string;
+  harga?: number;
+  tanggal: string;
+  waktu: string;
+  lokasi: string;
+  deskripsiKonser: string;
+  availableSeats: number;
+  ticketType?: string;
+  isPaidEvent: boolean;
+  discount?: number;
+  discountExpiry?: string;
+  gambarKonser: string;
+}
+
+export interface Review {
+  ConcertId: number;
+  experience: string;
+  quality: string;
+  suggestions: string;
+  rating: number;
+}
