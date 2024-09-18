@@ -2,13 +2,14 @@
 import { useUserLogin } from "@/context/UserContext"
 import { removeToken } from "@/networkcall/server"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useContext } from "react"
 
 
 export default function Logout() {
 
-   const userLogin = useUserLogin()
-   userLogin.id=0
+   const {setDefaultLoginUser} = useContext(useUserLogin)
+   
+   setDefaultLoginUser({id:0, username: null})
 
    removeToken()
    const router = useRouter() 

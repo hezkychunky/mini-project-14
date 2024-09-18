@@ -11,6 +11,8 @@ import cors from 'cors';
 import { PORT } from './config';
 import { UserRouter } from './routers/user.router';
 import { BonusRouter } from './routers/bonus.router';
+import { PaymentRouter } from './routers/payment.router';
+import { ConcertRouter } from './routers/concert.router';
 
 export default class App {
   private app: Express;
@@ -54,6 +56,8 @@ export default class App {
   private routes(): void {
     const userRouter = new UserRouter()
     const bonusRouter = new BonusRouter()
+    const paymentRouter = new PaymentRouter()
+    const concertRouter = new ConcertRouter()
 
     this.app.get('/api', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student API!`);
@@ -61,6 +65,10 @@ export default class App {
     this.app.use('/api/users', userRouter.getRouter())
 
     this.app.use('/api/bonuses', bonusRouter.getRouter())
+
+    this.app.use('/api/payments', paymentRouter.getRouter())
+
+    this.app.use('/api/concerts', concertRouter.getRouter())
   }
 
   public start(): void {

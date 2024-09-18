@@ -1,16 +1,17 @@
 'use client'
 
-// import { useUserLogin } from "@/context/UserContext"
+import { useUserLogin } from "@/context/UserContext"
 import Link from "next/link"
+
 // import { useParams } from "next/navigation"
 import { useContext, useEffect, useState } from "react"
 
 export default function ProfilePage() {
    // const params = useParams<{ token: string }>()
-
-    const loggedUserId = localStorage.getItem('id')
-
+   
    // const userLogin = useUserLogin()
+
+   const {defaultLoginUser, setDefaultLoginUser} = useContext(useUserLogin)
  
    const [userInfo, setUserInfo ] = useState({
       name: '',
@@ -25,19 +26,19 @@ export default function ProfilePage() {
    const [coupon, setCoupon] = useState(false)
 
    useEffect(() => {
-      fetch(`http://localhost:8000/api/bonuses/${loggedUserId}`)
+      fetch(`http://localhost:8000/api/bonuses/${defaultLoginUser.id}`)
       .then(response => response.json())
       .then(data => {
          const userBonus = data.sortedBonus
          const totalBonus = userBonus.length * 10000
          setBonus(totalBonus)
-         // console.log(userBonus);
       })
+      
    },[])
 
    useEffect(() => {
 
-      fetch(`http://localhost:8000/api/users/${loggedUserId}`)
+      fetch(`http://localhost:8000/api/users/${defaultLoginUser.id}`)
       .then(response => response.json())
       .then(data => {
          setUserInfo({
@@ -49,7 +50,7 @@ export default function ProfilePage() {
          } 
       )        
          // console.log([data.user.Bonus]);
-      });
+      })
    },[])
 
    const handleCoupon = () => {
@@ -69,8 +70,16 @@ export default function ProfilePage() {
                <h1 className="text-center mt-20">Get <span className="text-slate-700">10.000</span> points</h1>
                <h1 className="text-center lg:text-sm text-xs font-light">for every registration using your referral number below:</h1>
                <h1 className="text-slate-700 lg:text-3xl text-xl text-center">{userInfo.refNumber}</h1>
-               {userInfo.role === 'Admin' && <Link href='/dashboard' className="z-20">
-                  <button className="border-2 border-white rounded-xl h-10 w-32 text-blue-600 hover:bg-blue-600 hover:text-white">Dashboard</button></Link>}
+               {userInfo.role === 'Admin' && 
+                  <div className="flex justify-center gap-4 text-sm">
+                  <Link href='/dashboard' className="z-20">
+                     <button className="border-2 border-white rounded-xl h-10 w-32 text-white bg-blue-600 hover:scale-105 text-center">Dashboard</button>
+                  </Link>
+                  <Link href='/create-event'>
+                     <button className="border-2 border-white rounded-xl h-10 w-32 text-white bg-blue-600 hover:scale-105 text-center">Create Event</button>
+                  </Link>
+                  </div>
+                  }
             </div>
          </div>
          <div className="flex flex-col px-8 py-20 w-2/5 border border-yellow-500 border-l-2 border-b-0 border-t-0 border-r-0">

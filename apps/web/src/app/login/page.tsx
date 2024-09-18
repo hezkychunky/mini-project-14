@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { createToken } from "@/networkcall/server";
 import { useUserLogin } from "@/context/UserContext";
-import { useState } from "react";
+import { useContext } from "react";
 
 const createSchema = yup.object().shape({
    username: yup.string().required('username is required'),
@@ -22,8 +22,9 @@ export default function Login() {
 
    const initialValues: IUserLogin = { username: "", password: "" }
 
-   const userLogin = useUserLogin()
-   const [loginId, setLoginId] = useState()
+   const {defaultLoginUser, setDefaultLoginUser} = useContext(useUserLogin)
+   console.log(defaultLoginUser);
+   
 
    const onLogin = async (data: IUserLogin, action: FormikHelpers<IUserLogin>) => {
       try {
@@ -32,10 +33,7 @@ export default function Login() {
          toast.success(result.msg)
          action.resetForm()
          createToken(result.token)
-         localStorage.setItem('id', result.user.id)
-         localStorage.setItem('username', result.user.username)
-         setLoginId(userLogin.id = result.user.id)
-         setLoginId(userLogin.username = result.user.username)
+         setDefaultLoginUser({id: result.user.id, username: result.user.username})
          
          
          router.push(`/profile/${result.user.username}`)

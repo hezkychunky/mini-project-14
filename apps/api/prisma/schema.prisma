@@ -10,6 +10,47 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model event_details {
+  konserId       Int       @id
+  harga          Int?
+  isPaidEvent    Boolean?  @default(false)
+  availableSeats Int
+  ticketType     String?
+  referralCode   String?
+  discount       Float?
+  discountExpiry DateTime? @db.DateTime(0)
+  createdAt      DateTime? @default(now()) @db.DateTime(0)
+  konser         konser    @relation(fields: [konserId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "event_details_ibfk_1")
+}
+
+model konser {
+  id              Int             @id @default(autoincrement())
+  createdAt       DateTime?       @default(now()) @db.DateTime(0)
+  deskripsiKonser String
+  gambarKonser    String?
+  lokasi          String?
+  namaKonser      String
+  tanggal         DateTime        @db.DateTime(0)
+  waktu           String
+  event_details   event_details[]
+  Payment         Payment[]
+}
+
+model Payment {
+  id        Int       @id @default(autoincrement())
+  IdKonser  Int
+  userId    Int
+  amount    Float
+  status    String
+  createdAt DateTime? @default(now())
+
+  // Relations
+  konser konser @relation(fields: [IdKonser], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+// divider
+
 enum Role {
   User
   Admin
@@ -20,20 +61,20 @@ model Bonus {
   owner      User     @relation(fields: [ownerId], references: [id])
   amount     Int      @default(10000)
   ownerId    Int
-  validUntil DateTime 
+  validUntil DateTime
 }
 
 model User {
-  id                 Int      @id @default(autoincrement())
-  username           String   @unique
+  id                 Int       @id @default(autoincrement())
+  username           String    @unique
   password           String
-  ownedReferalNumber String?  @unique
+  ownedReferalNumber String?   @unique
   referalNumber      String?
-  balance            Int      @default(0)
-  // point              Int       @default(0)
-  coupon             Boolean  @default(false)
+  balance            Int       @default(0)
+  coupon             Boolean   @default(false)
   couponValidUntil   DateTime?
-  role               Role     @default(User)
-  createdAt          DateTime @default(now())
+  role               Role      @default(User)
+  createdAt          DateTime  @default(now())
   bonus              Bonus[]
+  Payment            Payment[]
 }

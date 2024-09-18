@@ -2,11 +2,12 @@
 
 import { useUserLogin } from "@/context/UserContext";
 import Link from "next/link";
+import { useContext } from "react";
 
 
 export function NavigationBar() { 
 
-   const userLogin = useUserLogin()
+   const {defaultLoginUser} = useContext(useUserLogin)
    
 
    return (
@@ -25,9 +26,9 @@ export function NavigationBar() {
                   <ul className="flex flex-col gap-y-4 sm:flex-row sm:gap-x-8">
                      <li className=""><Link className="text-white hover:scale-110" href="/">Upcoming</Link></li>
                      <li className=""><Link className="text-white hover:scale-110" href="/">Past Events</Link></li>
-                     {userLogin.id > 0? 
+                     {defaultLoginUser.id > 0? 
                      <div className="flex gap-4">
-                        <li className="mt-2 sm:mt-0"><Link className="rounded-xl border-2 border-white px-6 py-2 font-medium text-white hover:bg-blue-600 hover:text-white" href={`/profile/${userLogin.username}`}>Profile</Link></li>
+                        <li className="mt-2 sm:mt-0"><Link className="rounded-xl border-2 border-white px-6 py-2 font-medium text-white hover:bg-blue-600 hover:text-white" href={`/profile/${defaultLoginUser.username}`}>Profile</Link></li>
                         <li className="mt-2 sm:mt-0"><Link className="rounded-xl border-2 border-white px-6 py-2 font-medium text-white hover:bg-blue-600 hover:text-white" href="/logout">Logout</Link></li>  
                      </div>: 
                      <div className="flex gap-4">
