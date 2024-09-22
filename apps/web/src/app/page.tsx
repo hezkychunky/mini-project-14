@@ -1,3 +1,4 @@
+"use client"
 import Wrapper from '@/components/wrapper';
 import Link from 'next/link';
 

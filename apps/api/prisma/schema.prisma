@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -34,6 +31,7 @@ model konser {
   waktu           String
   event_details   event_details[]
   Payment         Payment[]
+  Review          Review[]
 }
 
 model Payment {
@@ -47,6 +45,17 @@ model Payment {
   // Relations
   konser konser @relation(fields: [IdKonser], references: [id])
   user   User   @relation(fields: [userId], references: [id])
+}
+
+model Review {
+  id          Int      @id @default(autoincrement())
+  rating      Int
+  experience  String
+  quality     String
+  suggestions String?
+  ConcertId   Int
+  konser      konser   @relation(fields: [ConcertId], references: [id])
+  createdAt   DateTime @default(now())
 }
 
 // divider
