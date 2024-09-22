@@ -27,39 +27,11 @@ model konser {
   gambarKonser    String?
   lokasi          String?
   namaKonser      String
-  tanggal         DateTime?       @db.DateTime(0)
+  tanggal         DateTime        @db.DateTime(0)
   waktu           String
   event_details   event_details[]
   Payment         Payment[]
-  review          Review[]
-}
-
-model User {
-  id                 Int       @id @default(autoincrement())
-  username           String    @unique
-  password           String
-  ownedReferalNumber String?   @unique
-  referalNumber      String?
-  balance            Int       @default(0)
-  coupon             Boolean   @default(false)
-  couponValidUntil   DateTime?
-  role               Role      @default(User)
-  createdAt          DateTime  @default(now())
-  bonus              Bonus[]
-  Payment            Payment[]
-}
-
-enum Role {
-  User
-  Admin
-}
-
-model Bonus {
-  bonusId    Int      @id @default(autoincrement())
-  owner      User     @relation(fields: [ownerId], references: [id])
-  amount     Int      @default(10000)
-  ownerId    Int
-  validUntil DateTime
+  Review          Review[]
 }
 
 model Payment {
@@ -84,4 +56,34 @@ model Review {
   ConcertId   Int
   konser      konser   @relation(fields: [ConcertId], references: [id])
   createdAt   DateTime @default(now())
+}
+
+// divider
+
+enum Role {
+  User
+  Admin
+}
+
+model Bonus {
+  bonusId    Int      @id @default(autoincrement())
+  owner      User     @relation(fields: [ownerId], references: [id])
+  amount     Int      @default(10000)
+  ownerId    Int
+  validUntil DateTime
+}
+
+model User {
+  id                 Int       @id @default(autoincrement())
+  username           String    @unique
+  password           String
+  ownedReferalNumber String?   @unique
+  referalNumber      String?
+  balance            Int       @default(0)
+  coupon             Boolean   @default(false)
+  couponValidUntil   DateTime?
+  role               Role      @default(User)
+  createdAt          DateTime  @default(now())
+  bonus              Bonus[]
+  Payment            Payment[]
 }

@@ -10,11 +10,16 @@
     "test": "npx cypress verify & cypress run --component"
   },
   "dependencies": {
+    "apexcharts": "^3.53.0",
     "cross-env": "^7.0.3",
+    "formik": "^2.4.6",
     "lodash": "^4.17.21",
     "next": "14.0.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-apexcharts": "^1.4.1",
+    "react-dom": "^18",
+    "react-toastify": "^10.0.5",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.7",

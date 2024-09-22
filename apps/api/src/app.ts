@@ -7,8 +7,13 @@ import express, {
   NextFunction,
 } from 'express';
 import cors from 'cors';
+import { PORT } from './config';
+import { UserRouter } from './routers/user.router';
+import { BonusRouter } from './routers/bonus.router';
+import { PaymentRouter } from './routers/payment.router';
+import { ConcertRouter } from './routers/concert.router';
 import bodyParser from 'body-parser';
-import { PORT } from './config'; // Assuming you have a config file that exports PORT
+// import { PORT } from './config'; // Assuming you have a config file that exports PORT
 import router from './routers/konserRoute'; // Your Konser router
 
 export default class App {
@@ -59,7 +64,24 @@ export default class App {
     );
   }
 
-  // Start the server
+  private routes(): void {
+    const userRouter = new UserRouter()
+    const bonusRouter = new BonusRouter()
+    const paymentRouter = new PaymentRouter()
+    const concertRouter = new ConcertRouter()
+
+    this.app.get('/api', (req: Request, res: Response) => {
+      res.send(`Hello, Purwadhika Student API!`);
+    });
+    this.app.use('/api/users', userRouter.getRouter())
+
+    this.app.use('/api/bonuses', bonusRouter.getRouter())
+
+    this.app.use('/api/payments', paymentRouter.getRouter())
+
+    this.app.use('/api/concerts', concertRouter.getRouter())
+  }
+
   public start(): void {
     this.app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
