@@ -50,7 +50,7 @@ const FilterEvents = () => {
                 onChange={(e) => setPriceRange(e.target.value)}
                 className="border p-2 rounded mb-4"
             >
-                <option value="">Select Price Range</option>
+                <option value="">Select Price Range. Free</option>
                 <option value="0-500000">Rp 0 - Rp 500,000</option>
                 <option value="500000-1000000">Rp 500,000 - Rp 1,000,000</option>
                 <option value="1000000-1500000">Rp 1,000,000 - Rp 1,500,000</option>

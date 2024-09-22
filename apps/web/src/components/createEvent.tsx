@@ -1,98 +1,90 @@
 "use client"
-import React, { useState } from 'react';
-import { AddEventData } from '@/lib/konser';
-import { CreateEvent } from '@/lib/createEvent'; // Import the createEvent function and EventData type
+import { EventFormList } from '@/lib/konser';
+import axios from 'axios';
+import React, { useState } from 'react'
 
-const CreateEventPage = () => {
-  const [formData, setFormData] = useState<AddEventData>({
-    namaKonser: '',
-    harga: undefined,
-    tanggal: '',
-    waktu: '',
-    lokasi: '',
-    deskripsiKonser: '',
-    availableSeats: 0,
-    ticketType: '',
-    isPaidEvent: false,
-    discount: undefined,
-    discountExpiry: '',
-    gambarKonser: '',
-  });
+const PublicURL = process.env.NEXT_PUBLIC_BASE_API_URL
 
-  const [Pictures, setPictures] = useState<File | null>(null);
+const defaultEventForm: EventFormList = {
+  namaKonser: '',
+  harga: undefined,
+  tanggal: '',
+  waktu: '',
+  lokasi: '',
+  deskripsiKonser: '',
+  availableSeats: 0,
+  ticketType: '',
+  isPaidEvent: false,
+  discount: undefined,
+  discountExpiry: '',
+  gambarKonser: null,
+};
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const target = e.target;
+export default function EventForm() {
+  const [formData, setFormData] = useState<EventFormList>(defaultEventForm)
 
-    if (target instanceof HTMLInputElement) {
-      const { name, type, value, checked, files } = target;
+  const HandleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, type, value, checked, files } = e.target as HTMLInputElement
 
-      if (type === 'checkbox') {
-        setFormData((prevData) => ({
-          ...prevData,
-          [name]: checked,
-        }));
-      } else if (type === 'file' && files) {
-        const File = files[0];
-        setPictures(File);
-        setFormData((prevData) => ({
-          ...prevData,
-          gambarKonser: File.name,
-        }));
-      } else {
-        setFormData((prevData) => ({
-          ...prevData,
-          [name]: value,
-        }));
-      }
-    } else if (target instanceof HTMLTextAreaElement) {
-      const { name, value } = target;
+    if (type === 'checkbox') {
       setFormData((prevData) => ({
         ...prevData,
-        [name]: value,
-      }));
-    } else if (target instanceof HTMLSelectElement) {
-      const { name, value } = target;
+        [name]: checked
+      }))
+    } else if (type === 'file' && files) {
+      const file = files[0]
       setFormData((prevData) => ({
         ...prevData,
-        [name]: value,
-      }));
+        gambarKonser: file
+      }))
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value
+      }))
     }
-  };
+  }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const HandleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const SendForm = new FormData();
 
-    const FormattedData = new FormData();
-    Object.keys(formData).forEach((key) => {
-      FormattedData.append(key, (formData as any)[key]);
-    });
+    for (const key in formData) {
+      if (Object.prototype.hasOwnProperty.call(formData, key)) {
+        const NextValue = formData[key as keyof EventFormList]
 
-    if (Pictures) {
-      FormattedData.append('gambarKonser', Pictures);
+        if (NextValue !== undefined &&
+          NextValue !== null &&
+          (typeof NextValue === 'string' || NextValue instanceof File)
+        ) {
+          SendForm.append(key, NextValue as string)
+        }
+      }
     }
 
     try {
-      const newEvent = await CreateEvent(formData);
-      alert('Event created successfully!');
-      console.log(newEvent);
+      const response = await axios.post(`${PublicURL}/make-event`, SendForm, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      })
+      return response.data
     } catch (error) {
-      alert('Error creating event');
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white shadow-md rounded-lg">
       <h1 className="text-2xl font-bold mb-6 text-center">Create New Event Form</h1>
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
+      <form onSubmit={HandleSubmit} encType="multipart/form-data">
         <div className="mb-4">
           <label className="block text-gray-700 font-semibold mb-2">Event Name:</label>
           <input
             type="text"
             name="namaKonser"
             value={formData.namaKonser}
-            onChange={handleChange}
+            onChange={HandleChange}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -100,11 +92,11 @@ const CreateEventPage = () => {
 
         <div className="mb-4">
           <label className="block text-gray-700 font-semibold mb-2">Event Image:</label>
-          <input 
+          <input
             type="file"
-            name="image"
+            name="gambarKonser"
             accept="image/*"
-            onChange={handleChange}
+            onChange={HandleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg"
           />
         </div>
@@ -115,7 +107,7 @@ const CreateEventPage = () => {
             type="number"
             name="harga"
             value={formData.harga || ''}
-            onChange={handleChange}
+            onChange={HandleChange}
             disabled={!formData.isPaidEvent}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -127,7 +119,7 @@ const CreateEventPage = () => {
             type="date"
             name="tanggal"
             value={formData.tanggal}
-            onChange={handleChange}
+            onChange={HandleChange}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -139,7 +131,7 @@ const CreateEventPage = () => {
             type="time"
             name="waktu"
             value={formData.waktu}
-            onChange={handleChange}
+            onChange={HandleChange}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -151,7 +143,7 @@ const CreateEventPage = () => {
             type="text"
             name="lokasi"
             value={formData.lokasi}
-            onChange={handleChange}
+            onChange={HandleChange}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -162,7 +154,7 @@ const CreateEventPage = () => {
           <textarea
             name="deskripsiKonser"
             value={formData.deskripsiKonser}
-            onChange={handleChange}
+            onChange={HandleChange}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -174,7 +166,7 @@ const CreateEventPage = () => {
             type="number"
             name="availableSeats"
             value={formData.availableSeats}
-            onChange={handleChange}
+            onChange={HandleChange}
             required
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -186,7 +178,7 @@ const CreateEventPage = () => {
             type="text"
             name="ticketType"
             value={formData.ticketType || ''}
-            onChange={handleChange}
+            onChange={HandleChange}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -197,7 +189,7 @@ const CreateEventPage = () => {
             type="checkbox"
             name="isPaidEvent"
             checked={formData.isPaidEvent}
-            onChange={handleChange}
+            onChange={HandleChange}
             className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
           />
         </div>
@@ -208,7 +200,7 @@ const CreateEventPage = () => {
             type="number"
             name="discount"
             value={formData.discount || ''}
-            onChange={handleChange}
+            onChange={HandleChange}
             disabled={!formData.isPaidEvent}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -220,7 +212,7 @@ const CreateEventPage = () => {
             type="date"
             name="discountExpiry"
             value={formData.discountExpiry || ''}
-            onChange={handleChange}
+            onChange={HandleChange}
             disabled={!formData.isPaidEvent}
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -234,7 +226,5 @@ const CreateEventPage = () => {
         </button>
       </form>
     </div>
-  );
-};
-
-export default CreateEventPage;
+  )
+}

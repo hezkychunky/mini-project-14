@@ -1,9 +1,14 @@
-import multer from "multer";
-import path from "path";
+import multer from "multer"
+import path from "path"
+import fs from "fs"
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, '../../public/images'))
+        const dir = path.join(__dirname, '/public/images')
+        if(!fs.existsSync(dir)){
+            fs.mkdirSync(dir, {recursive: true})
+        }
+        cb(null, dir)
     },
     filename: (req, file, cb) => {
         cb(null, `${Date.now()}-${file.originalname}`)
@@ -12,6 +17,7 @@ const storage = multer.diskStorage({
 
 const Upload = multer({
     storage: storage,
+    limits: {fileSize: 5 * 1024 * 1024},
     fileFilter: (req, file, cb) => {
         const FileTypes = /jpeg|jpg|png|gif/
         const ExtName = FileTypes.test(path.extname(file.originalname).toLowerCase())

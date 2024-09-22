@@ -3,6 +3,7 @@ import { FilteringSearch } from "@/controllers/filterController";
 import { cariKonser, getAllConcerts, getTheDetailsbyID } from "@/controllers/konserController";
 import { confirmPayment, createPayment, getPaymentByID } from "@/controllers/paymentController";
 import { ReviewConcert } from "@/controllers/reviewController";
+import Upload from "@/middlewares/uploadMiddleware";
 import { Router } from "express";
 
 const router = Router()
@@ -21,7 +22,7 @@ router.get('/payment/:id', getPaymentByID)
 router.post('/confirm-payment', confirmPayment)
 
 //For Post the Concert
-router.post('/make-event', MakeEvent)
+router.post('/make-event', Upload.single('gambarKonser'), MakeEvent)
 
 //For the Review
 router.post('/reviews', ReviewConcert)

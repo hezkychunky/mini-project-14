@@ -20,19 +20,19 @@ export interface EventDetails {
   discountExpiry?: Date, // Match Prisma field name
 }
 
-export interface AddEventData {
-  namaKonser: string;
-  harga?: number;
-  tanggal: string;
-  waktu: string;
-  lokasi: string;
-  deskripsiKonser: string;
-  availableSeats: number;
-  ticketType?: string;
-  isPaidEvent: boolean;
-  discount?: number;
-  discountExpiry?: string;
-  gambarKonser: string;
+export interface EventFormList {
+  namaKonser: '',
+  harga: undefined,
+  tanggal: '',
+  waktu: '',
+  lokasi: '',
+  deskripsiKonser: '',
+  availableSeats: 0,
+  ticketType: '',
+  isPaidEvent: false,
+  discount: undefined,
+  discountExpiry: '',
+  gambarKonser: File | null,
 }
 
 export interface Review {

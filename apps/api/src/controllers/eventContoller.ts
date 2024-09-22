@@ -1,11 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import Upload from "@/middlewares/uploadMiddleware";
-import path from 'path'
+import path from 'path';
 
 const Prisma = new PrismaClient();
 
-export const MakeEvent =[Upload.single('image'), async (req: Request, res: Response) => {
+export const MakeEvent = async (req: Request, res: Response) => {
     const {
         namaKonser,
         harga,
@@ -20,14 +19,16 @@ export const MakeEvent =[Upload.single('image'), async (req: Request, res: Respo
         discountExpiry
     } = req.body;
 
+
     try {
         // Validate and format date
         if (!tanggal) {
             return res.status(400).json({ error: "Missing 'tanggal' field." });
         }
+        const isPaidE = req.body.isPaidEvent === 'true'
 
-        const formattedDate = new Date(tanggal);
-        if (isNaN(formattedDate.getTime())) {
+        const formattedDate = new Date(tanggal).toLocaleDateString();
+        if (isNaN(parseInt(formattedDate))) {
             return res.status(400).json({ error: "Invalid date format for 'tanggal'" });
         }
 
@@ -57,7 +58,7 @@ export const MakeEvent =[Upload.single('image'), async (req: Request, res: Respo
                 event_details: {
                     create: {
                         harga: isPaidEvent ? formattedPrice : null,
-                        isPaidEvent: isPaidEvent || false,
+                        isPaidEvent: isPaidE,
                         availableSeats: seats || 0, // Provide default value if needed
                         ticketType: ticketType || "General Admission", // Provide default value if needed
                         discount: eventDiscount || 0, // Default to 0 if not provided
@@ -72,4 +73,4 @@ export const MakeEvent =[Upload.single('image'), async (req: Request, res: Respo
         console.error("Internal Server Error:", error);
         res.status(500).json({ error: "Failed to create the event", details: error });
     }
-}];
+}
