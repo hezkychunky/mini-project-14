@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 export class PaymentController {
    async getPayment(req: Request, res: Response) {
       try {
-         const payments = await prisma.payment.findMany()
+         const payments = await prisma.payment.findMany({include: {konser: true}})
          res.status(200).send({
             status: 'ok',
             payments
@@ -18,14 +18,19 @@ export class PaymentController {
    }
 
    async getPaymentId(req: Request, res: Response) {
-      try {
-         const payments = await prisma.payment.findMany()
+      
+      const { id } = req.params
 
-         const paymentByConcertId = await payments.filter((item:any) => item.IdKonser === parseInt(req.params.id))
-         res.status(200).send({
-            status: 'ok',
-            paymentByConcertId
-         })
+    try {
+        const payment = await prisma.payment.findUnique({
+            where: {id: Number(id)},
+        })
+
+        if (!payment) {
+            return res.status(404).send({error: 'Payment not found'})
+        } else {
+            return res.status(200).json(payment)
+        }
       } catch (err) {
          res.status(400).send({
             status: 'error',
@@ -33,4 +38,32 @@ export class PaymentController {
          })
       }
    }
+
+   async getPaymentByConcertId(req: Request, res: Response) {
+
+    try {
+        const payments = await prisma.payment.findMany({
+            include: {konser: true},
+            where: {IdKonser: parseInt(req.params.id)},
+        })
+
+        if (!payments) {
+            return res.status(404).send({error: 'Payment not found'})
+        } else {
+            return res.status(200).send({
+               status: 'ok',
+               payments
+            })
+        }
+      } catch (err) {
+         res.status(400).send({
+            status: 'error',
+            msg: err
+         })
+      }
+   }
+
+   
+   
 }
+

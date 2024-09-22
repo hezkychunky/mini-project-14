@@ -4,11 +4,9 @@ import { useUserLogin } from "@/context/UserContext";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
-import DashboardMonthly from "./dashboard-month";
-import DashboardAnnual from "./dashboard-year";
 
 
-export default function Dashboard() {
+export default function DashboardAnnual() {
 
   const router = useRouter()
 
@@ -38,33 +36,24 @@ export default function Dashboard() {
       const paymentList = data.payments
       // console.log(paymentList);
       
-      // mencari tanggal-tanggal terjadinya pembelian tiket concerts
-      const concertPayment = paymentList.map((item:any) => {
-        const convertToDate = new Date(item.createdAt)
-        const toGmt = convertToDate.getMonth()+1 +'/'+ convertToDate.getDate() + '/' + convertToDate.getFullYear().toString() + ' ' + 'GMT'
-        return toGmt
-      }) 
-      
-      console.log();
-        
-
-      // mencari jumlah tiket per tanggal transaksi
+      // mencari jumlah tiket per bulan transaksi
       
       const transactionDates = paymentList.map((item:any) => item.createdAt.substring(0,10)) //masih ada duplicate
       const sortedTransactionDates = transactionDates.sort((a:any,b:any) => Date.parse(a) - Date.parse(b))
-      const setSortedTransactionDates = [...new Set(sortedTransactionDates)]
-      const totalDailyTransaction = []
+      const sortedTransactionMonth = sortedTransactionDates.map((item:any) => item.substring(0,4))
+      const setSortedTransactionMonth = [...new Set(sortedTransactionMonth)]
+      const totalMonthlyTransaction = []
       let count = 0
-      for (let i = 0; i < setSortedTransactionDates.length; i++) { 
+      for (let i = 0; i < setSortedTransactionMonth.length; i++) { 
         for (let j = 0; j < sortedTransactionDates.length; j++) {
-          if(setSortedTransactionDates[i] === sortedTransactionDates[j]) {
+          if(setSortedTransactionMonth[i] === sortedTransactionMonth[j]) {
             count++
           } 
         }
-        totalDailyTransaction.push(count)
+        totalMonthlyTransaction.push(count)
         count = 0
       } 
-      // console.log(paymentList,'paymentlist');
+      console.log(sortedTransactionMonth,'monthly payment');
 
       // mendapatkan distinct concertID
       const getAllConcertId = paymentList.map((payment:any) =>  payment.IdKonser)
@@ -74,7 +63,7 @@ export default function Dashboard() {
       setState({
         series: [{
           name: 'Total of Sold Events',
-          data: totalDailyTransaction
+          data: totalMonthlyTransaction
         }],
         
         options: {
@@ -117,8 +106,8 @@ export default function Dashboard() {
           },
         },
         xaxis: {
-          type: 'datetime',
-          categories: [...new Set(concertPayment)], //convert ke distinct (Set)
+          type: 'category',
+          categories: setSortedTransactionMonth
         },
         legend: {
           position: 'right',
@@ -146,19 +135,8 @@ export default function Dashboard() {
        return (
          <div>
             <div id="chart" className="flex flex-col justify-center items-center my-8">
-            <h1 className="text-slate-600 text-3xl">Sold Tickets Report</h1>
-            <label className="font-sans font-semibold text-slate-600" htmlFor="list">List of events</label>
-            <div className="flex justify-evenly flex-wrap gap-2 mt-2">
-              <button className="hover:scale-105 hover:brightness-9 px-2 py-1 text-sm font-sans rounded-lg bg-yellow-400 text-white font-semibold" onClick={() => setSelectedEvent('payments')} >All Events</button>
-              {concertNameList.map((item:any) => {
-                return (
-                  <button key={item.id} value={item.id} onClick={() => setSelectedEvent(`payments/concert/${item.id}`)} className="hover:scale-105 hover:brightness-9 cursor-pointer px-2 py-1 text-sm font-semibold font-sans rounded-lg bg-yellow-400 text-white">{item.namaKonser}</button>
-                )
-              })}
-            </div>
+            <h1 className="text-slate-600 text-3xl">Annual</h1>
             <ReactApexChart options={state.options} series={state.series} type="bar" height={350} width={600} />
-            <DashboardMonthly />
-            <DashboardAnnual />
             </div>
          <div id="html-dist"></div>
          </div>

@@ -1,6 +1,5 @@
 'use client'
 
-import Wrapper from "@/components/wrapper";
 import Link from "next/link";
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik'
 import * as yup from 'yup'
@@ -54,8 +53,8 @@ export default function Login() {
             () => {
                return (
                   <Form>
-                     <Wrapper>
-                        <h1 className="text-center w-full mt-28 mb-10">Please insert your username and password</h1>
+                     <div className="w-full h-auto flex flex-col justify-center items-center gap-4 font-sans font-medium">
+                        <h1 className="text-center w-full mt-24 mb-10">Please insert your username and password</h1>
                         <Field type='text' autoComplete='on' name='username' placeholder='Username' className="border-[1px] h-10 border-gray-500 rounded-sm px-4 w-64" />
                         <ErrorMessage
                            name='username'
@@ -73,7 +72,7 @@ export default function Login() {
                            <h1 className="text-center w-full font-normal">Do not have an account?</h1>
                            <Link href="/signup" className="text-blue-400 w-auto text-nowrap mx-3">Sign up</Link>
                         </div>
-                     </Wrapper>
+                     </div>
                   </Form>
                )
             }

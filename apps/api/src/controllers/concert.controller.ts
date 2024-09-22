@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 export class ConcertController {
    async getConcert(req: Request, res: Response) {
       try {
-         const concerts = await prisma.konser.findMany()
+         const concerts = await prisma.konser.findMany({include: {Payment: true}})
          res.status(200).send({
             status: 'ok',
             concerts
@@ -20,7 +20,10 @@ export class ConcertController {
    async getConcertId(req: Request, res: Response) {
       try {
          const concert = await prisma.konser.findUnique({
-            where: { id: parseInt(req.params.id) }
+            where: { id: parseInt(req.params.id) },
+            include: {
+               Payment: true
+            }
          })
          if (!concert) throw 'Concert not found'
 

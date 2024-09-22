@@ -18,7 +18,8 @@ export class BonusController {
          })
       }
    }
-   // parseInt(req.params.id)
+
+   // get bonus by owner ID
    async getBonusId(req: Request, res: Response) {
       try {
          const bonuses = await prisma.bonus.findMany()

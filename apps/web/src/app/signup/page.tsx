@@ -1,6 +1,5 @@
 'use client'
 
-import Wrapper from '@/components/wrapper'
 import { signupUser } from '@/networkcall/user'
 import { IUserSignup } from '@/types/user'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
@@ -44,8 +43,8 @@ export default function Signup() {
             () => {
                return (
                   <Form>
-                     <Wrapper>
-                        <h1 className="text-center w-full mt-28 mb-10">Please register your username and password</h1>
+                     <div className="w-full h-auto flex flex-col justify-center items-center gap-4 font-sans font-medium">
+                        <h1 className="text-center w-full mt-24 mb-10">Please register your username and password</h1>
                         <h1 className='font-medium text-sm'>Get <span className='text-red-600 font-bold'>10% discount coupon </span>by register using referral number</h1>
                         <Field type='text' autoComplete='on' name='username' placeholder='Username' className="border-[1px] h-10 border-gray-500 rounded-sm px-4 w-64" />
                         <ErrorMessage
@@ -70,7 +69,7 @@ export default function Signup() {
                            <h1 className="text-center w-full font-normal">Already have an account?</h1>
                            <Link href="/login" className="text-blue-400 w-auto text-nowrap mx-3">Log in</Link>
                         </div>
-                     </Wrapper>
+                     </div>
                   </Form>
                )
             }
